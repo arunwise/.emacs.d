@@ -26,7 +26,7 @@
  '(org-agenda-files (quote ("~/org-files/agenda.org")))
  '(package-selected-packages
    (quote
-    (yaml-mode ivy-bibtex docker google-this ensime scala-mode ein jinja2-mode counsel-projectile elpy haskell-mode markdown-mode py-autopep8 auctex ivy swiper magit))))
+    (csv yaml-mode ivy-bibtex docker google-this ensime scala-mode ein jinja2-mode counsel-projectile elpy haskell-mode markdown-mode py-autopep8 auctex ivy swiper magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
