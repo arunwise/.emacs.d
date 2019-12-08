@@ -16,7 +16,7 @@
 	 "* %? :NOTE:\n%U")))
 (setq org-todo-keywords
       '((sequence "TODO" "BLOCKED" "|" "DONE" "CANCELED" "SOMEDAY")
-	(sequence "BACKLOG" "PROGRESS" "|" "REVIEW" "CLOSED")))
+	(sequence "BACKLOG" "IMPLEMENTATION-PLAN" "PROGRESS" "REVIEW" "|" "CLOSED")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -29,7 +29,7 @@
  '(org-agenda-files (quote ("~/org-files/agenda.org")))
  '(package-selected-packages
    (quote
-    (polymode csv yaml-mode ivy-bibtex docker google-this ensime scala-mode ein jinja2-mode counsel-projectile elpy haskell-mode markdown-mode py-autopep8 auctex ivy swiper magit))))
+    (default-text-scale polymode csv yaml-mode ivy-bibtex docker google-this ensime scala-mode ein jinja2-mode counsel-projectile elpy haskell-mode markdown-mode py-autopep8 auctex ivy swiper magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -40,7 +40,8 @@
 ;; ---- General settings --------
 
 ;;(add-to-list 'default-frame-alist '(font . "Monaco-10"))
-(add-to-list 'default-frame-alist '(font . "Courier-14"))
+;;(add-to-list 'default-frame-alist '(font . "Courier-14"))
+(add-to-list 'default-frame-alist '(font . "Inconsolata-14"))
 (setq line-number-mode t)
 (setq column-number-mode t)
 (tool-bar-mode -1)
