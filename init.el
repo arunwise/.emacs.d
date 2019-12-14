@@ -37,7 +37,8 @@
 ;; ---- General settings --------
 
 ;;(add-to-list 'default-frame-alist '(font . "Monaco-10"))
-(add-to-list 'default-frame-alist '(font . "Courier-14"))
+;;(add-to-list 'default-frame-alist '(font . "Courier-14"))
+(add-to-list 'default-frame-alist '(font . "Inconsolata-14"))
 (setq line-number-mode t)
 (setq column-number-mode t)
 (tool-bar-mode -1)
