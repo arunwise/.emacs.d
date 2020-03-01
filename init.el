@@ -18,6 +18,9 @@
       '((sequence "TODO" "BLOCKED" "|" "DONE" "CANCELED" "SOMEDAY")
 	(sequence "BACKLOG" "IMPLEMENTATION-PLAN" "PROGRESS" "REVIEW" "|" "CLOSED")))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -25,11 +28,11 @@
  ;; If there is more than one, they won't work right.
  '(elpy-modules
    (quote
-    (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-django elpy-module-sane-defaults)))
+	(elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-django elpy-module-sane-defaults)))
  '(org-agenda-files (quote ("~/org-files/agenda.org")))
  '(package-selected-packages
    (quote
-    (default-text-scale polymode csv yaml-mode ivy-bibtex docker google-this ensime scala-mode ein jinja2-mode counsel-projectile elpy haskell-mode markdown-mode py-autopep8 auctex ivy swiper magit))))
+	(groovy-mode yasnippet elpy default-text-scale polymode csv yaml-mode ivy-bibtex docker google-this ensime scala-mode ein jinja2-mode counsel-projectile haskell-mode markdown-mode py-autopep8 auctex ivy swiper magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -52,6 +55,7 @@
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
+(setq tab-width 4)
 
 ;; ---- Elpy --------------------
 (package-initialize)
@@ -91,3 +95,7 @@
 
 ;; ---- tramp -------------------
 (setq tramp-default-method "ssh")
+
+;; ---- windmove ----------------
+(when (fboundp 'windmove-default-keybindings)
+  (windmove-default-keybindings))
