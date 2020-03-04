@@ -28,11 +28,11 @@
  ;; If there is more than one, they won't work right.
  '(elpy-modules
    (quote
-	(elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-django elpy-module-sane-defaults)))
+    (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-django elpy-module-sane-defaults)))
  '(org-agenda-files (quote ("~/org-files/agenda.org")))
  '(package-selected-packages
    (quote
-	(groovy-mode yasnippet elpy default-text-scale polymode csv yaml-mode ivy-bibtex docker google-this ensime scala-mode ein jinja2-mode counsel-projectile haskell-mode markdown-mode py-autopep8 auctex ivy swiper magit))))
+    (dimmer groovy-mode yasnippet elpy default-text-scale polymode csv yaml-mode ivy-bibtex docker google-this ensime scala-mode ein jinja2-mode counsel-projectile haskell-mode markdown-mode py-autopep8 auctex ivy swiper magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -99,3 +99,8 @@
 ;; ---- windmove ----------------
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
+
+;; ---- dimmmer -----------------
+(require 'dimmer)
+(dimmer-mode t)
+(setq dimmer-fraction 0.4)
