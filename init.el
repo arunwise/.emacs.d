@@ -7,12 +7,12 @@
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
-(setq org-default-notes-file (concat org-directory "~/org-files/notes.org"))
+(setq org-default-notes-file (concat org-directory "~/org-organizer-files/notes.org"))
 (global-set-key (kbd "\C-c c") 'org-capture)
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org-files/notes.org" "Tasks")
+      '(("t" "Todo" entry (file+headline "~/org-organizer-files/notes.org" "Tasks")
          "* TODO %?\n  %i\n  %a")
-	("n" "Note" entry (file+headline "~/org-files/notes.org" "Notes")
+	("n" "Note" entry (file+headline "~/org-organizer-files/notes.org" "Notes")
 	 "* %? :NOTE:\n%U")))
 (setq org-todo-keywords
       '((sequence "TODO" "BLOCKED" "|" "DONE" "CANCELED" "SOMEDAY")
@@ -29,10 +29,11 @@
  '(elpy-modules
    (quote
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-django elpy-module-sane-defaults)))
- '(org-agenda-files (quote ("~/org-files/agenda.org")))
+ '(elpy-rpc-virtualenv-path (quote current))
+ '(org-agenda-files (quote ("~/org-organizer-files/agenda.org")))
  '(package-selected-packages
    (quote
-    (dimmer groovy-mode yasnippet elpy default-text-scale polymode csv yaml-mode ivy-bibtex docker google-this ensime scala-mode ein jinja2-mode counsel-projectile haskell-mode markdown-mode py-autopep8 auctex ivy swiper magit))))
+    (modus-operandi-theme modus-vivendi-theme fill-column-indicator htmlize dimmer groovy-mode yasnippet elpy default-text-scale polymode csv yaml-mode ivy-bibtex docker google-this ensime scala-mode ein jinja2-mode counsel-projectile haskell-mode markdown-mode py-autopep8 auctex ivy swiper magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -44,7 +45,7 @@
 
 ;;(add-to-list 'default-frame-alist '(font . "Monaco-10"))
 ;;(add-to-list 'default-frame-alist '(font . "Courier-14"))
-(add-to-list 'default-frame-alist '(font . "Inconsolata-14"))
+(add-to-list 'default-frame-alist '(font . "Inconsolata-12"))
 (setq line-number-mode t)
 (setq column-number-mode t)
 (tool-bar-mode -1)
@@ -56,6 +57,7 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 (setq tab-width 4)
+(load-theme 'modus-operandi t)
 
 ;; ---- Elpy --------------------
 (package-initialize)
@@ -104,3 +106,8 @@
 (require 'dimmer)
 (dimmer-mode t)
 (setq dimmer-fraction 0.4)
+
+;; ---- fill-column-indicator ---
+(require 'fill-column-indicator)
+(setq-default fill-column 88)
+(setq fci-mode t)
