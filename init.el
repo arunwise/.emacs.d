@@ -17,6 +17,10 @@
 (setq org-todo-keywords
       '((sequence "TODO" "BLOCKED" "|" "DONE" "CANCELED" "SOMEDAY")
 	(sequence "BACKLOG" "IMPLEMENTATION-PLAN" "PROGRESS" "REVIEW" "|" "CLOSED")))
+(setq org-refile-targets
+      '((org-agenda-files (:maxlevel . 3))
+	(nil . (:maxlevel . 2))))
+
 
 (org-babel-do-load-languages
  'org-babel-load-languages
