@@ -1,0 +1,174 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: Arun
+
+* Setup use-package
+
+#+begin_src emacs-lisp
+;; Setup `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+;; Should set before loading `use-package'
+(eval-and-compile
+  (setq use-package-always-ensure nil)
+  (setq use-package-always-defer nil)
+  (setq use-package-always-demand nil)
+  (setq use-package-expand-minimally nil)
+  (setq use-package-enable-imenu-support t))
+
+(eval-when-compile
+  (require 'use-package))
+#+end_src
+
+* Custom.el
+
+#+BEGIN_SRC emacs-lisp
+(use-package cus-edit
+  :config
+  (setq custom-file "~/.emacs.d/custom.el")
+
+  (unless (file-exists-p custom-file)
+    (write-region "" nil custom-file))
+
+  (load custom-file))
+#+END_SRC
+
+* Uniquify
+
+#+BEGIN_SRC emacs-lisp
+(use-package uniquify
+  :config
+  (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+  (setq uniquify-strip-common-suffix t)
+  (setq uniquify-after-kill-buffer-p t))
+#+END_SRC
+
+* Ivy
+
+#+BEGIN_SRC emacs-lisp
+(use-package ivy
+    :ensure t
+    :config
+    (ivy-mode 1)
+    ;;(setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d) "))
+#+END_SRC
+
+* Swiper
+
+#+BEGIN_SRC emacs-lisp
+(use-package swiper
+    :ensure t
+    :after ivy)
+#+END_SRC
+* GUI
+On my laptop with a screen resolution of 1680x1050, the following fonts look right:
+- =Inconsolata-12=
+- =SF Mono-10.5=
+Using an external monitor the following fonts look right:
+- =Inconsolata-13.5=
+- =SF Mono-12=
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+    :init
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (line-number-mode 1)
+    (column-number-mode 1)
+    (global-display-line-numbers-mode 1)
+    (show-paren-mode 1)
+    (set-frame-font "SF Mono-10.5")
+    :config
+    (setq inhibit-splash-screen t)	
+    (setq show-paren-delay 0)
+    (setq backup-directory-alist
+        `((".*" . ,temporary-file-directory)))
+    (setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t))))
+#+END_SRC
+
+* Magit
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t
+  :bind ("C-x g" . magit-status))
+#+END_SRC
+* Org
+** Basics
+#+BEGIN_SRC emacs-lisp
+(use-package org
+    :config
+    ;;agenda and notes
+    (setq org-directory "~/org-files")
+    (setq org-default-notes-file "~/org-files/notes.org")
+    (setq org-agenda-files '("~/org-files/agenda.org"))
+    ;; refile
+    (setq org-refile-targets
+        '((org-agenda-files . (:maxlevel . 2))
+	(nil . (:maxlevel . 2))))
+    (setq org-todo-keywords
+        '((sequence "TODO(t)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)" "SOMEDAY(s)")
+	(sequence "BACKLOG(b)" "IMPLEMENTATION-PLAN(i)" "PROGRESS(p)" "REVIEW(r)" "|" "CLOSED(c)"))))
+#+END_SRC
+
+** Capture
+#+BEGIN_SRC emacs-lisp
+(use-package org-capture
+    :after org
+    :config
+    (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline "~/org-organizer-files/notes.org" "Tasks")
+        "* TODO %?\n  %i\n  %a")
+	("n" "Note" entry (file+headline "~/org-organizer-files/notes.org" "Notes")
+	"* %? :NOTE:\n%U")))
+    :bind ("C-c c" . org-capture))
+#+END_SRC
+
+** Agenda
+#+BEGIN_SRC emacs-lisp
+(use-package org-agenda
+    :after org
+    :config
+    (setq org-agenda-confirm-kill t)
+    (setq org-agenda-show-all-dates t)
+    :bind (("C-c a" . org-agenda)
+        :map org-mode-map
+        ("C-'" . nil)
+        ("C-," . nil)))
+#+END_SRC
+
+** Source blocks
+#+BEGIN_SRC emacs-lisp
+(use-package org-src
+    :after org
+    :config
+    (setq org-src-window-setup 'current-window)
+    (setq org-src-fontify-natively t)
+    (setq org-src-preserve-indentation t)
+    (setq org-src-tab-acts-natively t)
+    (setq org-edit-src-content-indentation 0))
+#+END_SRC
+* Latex
+#+BEGIN_SRC emacs-lisp
+(use-package auctex
+  :defer t
+  :ensure t)
+#+END_SRC
+* Elpy
+#+BEGIN_SRC emacs-lisp
+(use-package elpy
+  :ensure t
+  :defer t
+  :init
+  (advice-add 'python-mode :before 'elpy-enable))
+#+END_SRC
+* Ivy bibtex
+#+BEGIN_SRC emacs-lisp
+(use-package ivy-bibtex
+    :config
+    (setq bibtex-completion-bibliography
+	  '("~/bibliography/bibliography.bib"))
+    (setq bibtex-completion-library-path
+	  '("~/bibliography/files")))
+#+END_SRC
