@@ -62,6 +62,7 @@
     :ensure t
     :after ivy)
 #+END_SRC
+
 * GUI
 Laptop preferred fonts (at 1680x1050 resolution):
 - =Inconsolata-12=
@@ -102,6 +103,7 @@ Laptop preferred fonts (at 1680x1050 resolution):
   :ensure t
   :bind ("C-x g" . magit-status))
 #+END_SRC
+
 * Org
 ** Basics
 #+BEGIN_SRC emacs-lisp
@@ -157,12 +159,14 @@ Laptop preferred fonts (at 1680x1050 resolution):
     (setq org-src-tab-acts-natively t)
     (setq org-edit-src-content-indentation 0))
 #+END_SRC
+
 * Latex
 #+BEGIN_SRC emacs-lisp
 (use-package auctex
   :defer t
   :ensure t)
 #+END_SRC
+
 * Elpy
 #+BEGIN_SRC emacs-lisp
 (use-package elpy
@@ -171,6 +175,7 @@ Laptop preferred fonts (at 1680x1050 resolution):
   :init
   (advice-add 'python-mode :before 'elpy-enable))
 #+END_SRC
+
 * Ivy-bibtex
 #+BEGIN_SRC emacs-lisp
 (use-package ivy-bibtex
@@ -180,12 +185,14 @@ Laptop preferred fonts (at 1680x1050 resolution):
   (setq bibtex-completion-library-path
 	'("~/bibliography/files")))
 #+END_SRC
+
 * Ibuffer
 #+BEGIN_SRC emacs-lisp
 (use-package ibuffer
   :config
   :bind (("C-x C-b" . ibuffer)))
 #+END_SRC
+
 * Counsel-projectile
 #+BEGIN_SRC emacs-lisp
 (use-package counsel-projectile
@@ -193,6 +200,7 @@ Laptop preferred fonts (at 1680x1050 resolution):
   :hook (after-init . counsel-projectile-mode)
   :bind ("s-p" . projectile-command-map))
 #+END_SRC
+
 * Theme
 #+BEGIN_SRC emacs-lisp
 (use-package modus-operandi-theme
@@ -200,3 +208,19 @@ Laptop preferred fonts (at 1680x1050 resolution):
 #+END_SRC
 
 * Window/Frame movement
+Winner mode which saves window configurations is not really required
+because, if a particular window/frame configuration is important it
+can be saved to a register. Windmove and ace-window are two
+alternatives for faster navigation between windows. Ace-window is the
+winner here.
+#+BEGIN_SRC emacs-lisp
+(use-package ace-window
+  :ensure t
+  :config
+  (setq aw-dispatch-always t)
+  (setq aw-ignore-current nil)
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?k ?l))
+  :bind ("s-o" . ace-window))
+#+END_SRC
+
+
