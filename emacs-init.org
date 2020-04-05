@@ -1,6 +1,8 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Arun
 
+This configuration is largely based on the one used by [[https://gitlab.com/protesilaos/dotfiles][Protesilaos
+Stavrou]]. Large chunks have been liberally copied from there.
 * Setup use-package
 
 #+begin_src emacs-lisp
