@@ -217,10 +217,7 @@ winner here.
 (use-package ace-window
   :ensure t
   :config
-  (setq aw-dispatch-always t)
   (setq aw-ignore-current nil)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?k ?l))
-  :bind ("s-o" . ace-window))
+  :bind ("C-x o" . ace-window))
 #+END_SRC
-
-
