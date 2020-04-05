@@ -63,10 +63,10 @@
     :after ivy)
 #+END_SRC
 * GUI
-On my laptop with a screen resolution of 1680x1050, the following fonts look right:
+Laptop preferred fonts (at 1680x1050 resolution):
 - =Inconsolata-12=
 - =SF Mono-10.5=
-Using an external monitor the following fonts look right:
+4K monitor preferred fonts (at 3360x1890 scaled resolution):
 - =Inconsolata-13.5=
 - =SF Mono-12=
 #+BEGIN_SRC emacs-lisp
@@ -78,14 +78,22 @@ Using an external monitor the following fonts look right:
     (column-number-mode 1)
     (global-display-line-numbers-mode 1)
     (show-paren-mode 1)
-    (set-frame-font "SF Mono-10.5")
     :config
+    (defconst laptop-font "SF Mono-10.5")
+    (defconst 4kmonitor-font "SF Mono-12")
+    (defun set-font-based-on-monitor ()
+      (interactive)
+      (when window-system
+	(if (<= (display-pixel-width) 1680)
+	    (set-frame-font laptop-font)
+	  (set-frame-font 4kmonitor-font))))
     (setq inhibit-splash-screen t)	
     (setq show-paren-delay 0)
     (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
     (setq auto-save-file-name-transforms
-        `((".*" ,temporary-file-directory t))))
+        `((".*" ,temporary-file-directory t)))
+    :hook (after-init . set-font-based-on-monitor))
 #+END_SRC
 
 * Magit
@@ -163,12 +171,32 @@ Using an external monitor the following fonts look right:
   :init
   (advice-add 'python-mode :before 'elpy-enable))
 #+END_SRC
-* Ivy bibtex
+* Ivy-bibtex
 #+BEGIN_SRC emacs-lisp
 (use-package ivy-bibtex
-    :config
-    (setq bibtex-completion-bibliography
-	  '("~/bibliography/bibliography.bib"))
-    (setq bibtex-completion-library-path
-	  '("~/bibliography/files")))
+  :config
+  (setq bibtex-completion-bibliography
+	'("~/bibliography/bibliography.bib"))
+  (setq bibtex-completion-library-path
+	'("~/bibliography/files")))
 #+END_SRC
+* Ibuffer
+#+BEGIN_SRC emacs-lisp
+(use-package ibuffer
+  :config
+  :bind (("C-x C-b" . ibuffer)))
+#+END_SRC
+* Counsel-projectile
+#+BEGIN_SRC emacs-lisp
+(use-package counsel-projectile
+  :ensure t
+  :hook (after-init . counsel-projectile-mode)
+  :bind ("s-p" . projectile-command-map))
+#+END_SRC
+* Theme
+#+BEGIN_SRC emacs-lisp
+(use-package modus-operandi-theme
+  :ensure t)
+#+END_SRC
+
+* Window/Frame movement

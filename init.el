@@ -17,23 +17,7 @@
 ;;  ;; If there is more than one, they won't work right.
 ;;  )
 
-;; ;; ---- Projectile --------------
-;; (projectile-mode +1)
-;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
-;; ;; ---- ibuffer -----------------
-;; (global-set-key (kbd "C-x C-b") 'ibuffer)
-;; (autoload 'ibuffer "ibuffer" "List buffers." t)
-
-;; ;; ---- google-this -------------
-;; (google-this-mode 1)
-
-
 ;; ;; ---- tramp -------------------
 ;; (setq tramp-default-method "ssh")
 
-;; ;; ---- epa ---------------------
-;; (require 'epa-file)
 
-;; (epa-file-enable)
