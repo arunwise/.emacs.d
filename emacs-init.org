@@ -121,7 +121,8 @@ Laptop preferred fonts (at 1680x1050 resolution):
 	(nil . (:maxlevel . 2))))
     (setq org-todo-keywords
         '((sequence "TODO(t)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)" "SOMEDAY(s)")
-	(sequence "BACKLOG(b)" "IMPLEMENTATION-PLAN(i)" "PROGRESS(p)" "REVIEW(r)" "|" "CLOSED(c)"))))
+	(sequence "BACKLOG(b)" "IMPLEMENTATION-PLAN(i)" "PROGRESS(p)" "REVIEW(r)" "|" "CLOSED(c)")))
+    :bind ("C-c l" . org-store-link))
 #+END_SRC
 
 ** Capture
