@@ -119,6 +119,10 @@ Laptop preferred fonts (at 1680x1050 resolution):
     (setq org-refile-targets
         '((org-agenda-files . (:maxlevel . 2))
 	(nil . (:maxlevel . 2))))
+    ;; don't want to refile under TODO entries
+    (defun refile-target-predicate ()
+      (not (nth 2 (org-heading-components))))
+    (setq org-refile-target-verify-function 'refile-target-predicate)
     (setq org-todo-keywords
         '((sequence "TODO(t)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)" "SOMEDAY(s)")
 	(sequence "BACKLOG(b)" "IMPLEMENTATION-PLAN(i)" "PROGRESS(p)" "REVIEW(r)" "|" "CLOSED(c)")))
