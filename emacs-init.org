@@ -182,7 +182,12 @@ Laptop preferred fonts (at 1680x1050 resolution):
   :init
   (advice-add 'python-mode :before 'elpy-enable))
 #+END_SRC
-
+* Python-docstring
+#+BEGIN_SRC emacs-lisp
+(use-package python-docstring
+  :ensure t
+  :hook (python-mode . python-docstring-mode))
+#+END_SRC
 * Ivy-bibtex
 #+BEGIN_SRC emacs-lisp
 (use-package ivy-bibtex
@@ -227,4 +232,12 @@ winner here.
   (setq aw-ignore-current nil)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?k ?l))
   :bind ("C-x o" . ace-window))
+#+END_SRC
+* Shell
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+  :init
+  (setq explicit-shell-file-name "/bin/zsh")
+  (setq explicit-zsh-args '("-l" "-i"))
+)
 #+END_SRC
