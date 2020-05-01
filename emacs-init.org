@@ -82,7 +82,7 @@ Laptop preferred fonts (at 1680x1050 resolution):
     (global-display-line-numbers-mode 1)
     (show-paren-mode 1)
     :config
-    (defconst laptop-font "SF Mono-10.5")
+    (defconst laptop-font "SF Mono-12")
     (defconst 4kmonitor-font "SF Mono-12")
     (defun set-font-based-on-monitor ()
       (interactive)
@@ -171,7 +171,11 @@ Laptop preferred fonts (at 1680x1050 resolution):
 #+BEGIN_SRC emacs-lisp
 (use-package auctex
   :defer t
-  :ensure t)
+  :ensure t
+  :config
+  (setenv "PATH" (concat "/Library/TeX/texbin:"
+			 (getenv "PATH")))
+  (add-to-list 'exec-path "/Library/TeX/texbin"))
 #+END_SRC
 
 * Elpy
@@ -191,11 +195,23 @@ Laptop preferred fonts (at 1680x1050 resolution):
 * Ivy-bibtex
 #+BEGIN_SRC emacs-lisp
 (use-package ivy-bibtex
+  :ensure t
   :config
   (setq bibtex-completion-bibliography
 	'("~/bibliography/bibliography.bib"))
   (setq bibtex-completion-library-path
-	'("~/bibliography/files")))
+	'("~/bibliography/files"))
+
+  (defun bibtex-completion-open-pdf-external (keys &optional fallback-action)
+    (let ((bibtex-completion-pdf-open-function
+	   (lambda (fpath) (start-process "skim" "*ivy-bibtex-skim*" "open" "-a" "Skim" fpath))))
+      (bibtex-completion-open-pdf keys fallback-action)))
+
+  (ivy-bibtex-ivify-action bibtex-completion-open-pdf-external ivy-bibtex-open-pdf-external)
+
+  (ivy-add-actions
+   'ivy-bibtex
+   '(("P" ivy-bibtex-open-pdf-external "Open PDF file in external viewer (if present)"))))
 #+END_SRC
 
 * Ibuffer
@@ -203,6 +219,19 @@ Laptop preferred fonts (at 1680x1050 resolution):
 (use-package ibuffer
   :config
   :bind (("C-x C-b" . ibuffer)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package ibuffer-projectile
+  :ensure t
+  :after ibuffer
+  :config
+  (defun ibuffer-projectile-groups ()
+    (ibuffer-projectile-set-filter-groups)
+    (unless (eq ibuffer-sorting-mode 'alphabetic)
+      (ibuffer-do-sort-by-alphabetic)
+      (ibuffer-do-sort-by-major-mode)))
+  :hook (after-init . ibuffer-projectile-groups))
 #+END_SRC
 
 * Counsel-projectile
@@ -240,4 +269,20 @@ winner here.
   (setq explicit-shell-file-name "/bin/zsh")
   (setq explicit-zsh-args '("-l" "-i"))
 )
+#+END_SRC
+* Coding system
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+  :init
+  (prefer-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8))
+#+END_SRC
+* Spellchecker
+#+BEGIN_SRC emacs-lisp
+(use-package ispell
+  :ensure t
+  :config
+  (setq ispell-program-name "/usr/local/bin/ispell"))
 #+END_SRC
