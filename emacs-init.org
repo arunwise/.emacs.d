@@ -211,7 +211,8 @@ Laptop preferred fonts (at 1680x1050 resolution):
 
   (ivy-add-actions
    'ivy-bibtex
-   '(("P" ivy-bibtex-open-pdf-external "Open PDF file in external viewer (if present)"))))
+   '(("P" ivy-bibtex-open-pdf-external "Open PDF file in external viewer (if present)")))
+  :bind ("s-b" . ivy-bibtex))
 #+END_SRC
 
 * Ibuffer
