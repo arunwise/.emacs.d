@@ -286,3 +286,8 @@ winner here.
   :config
   (setq ispell-program-name "/usr/local/bin/ispell"))
 #+END_SRC
+* Xwidget
+#+BEGIN_SRC emacs-lisp
+(use-package emacs
+  :bind ("s-w" . xwidget-webkit-browse-url))  
+#+END_SRC
