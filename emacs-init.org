@@ -71,7 +71,7 @@ Laptop preferred fonts (at 1680x1050 resolution):
 - =SF Mono-12=
 4K monitor preferred fonts (at 3360x1890 scaled resolution):
 - =Inconsolata-13.5=
-- =SF Mono-13=
+- =SF Mono-12=
 #+BEGIN_SRC emacs-lisp
 (use-package emacs
     :init
@@ -79,11 +79,10 @@ Laptop preferred fonts (at 1680x1050 resolution):
     (scroll-bar-mode -1)
     (line-number-mode 1)
     (column-number-mode 1)
-    (global-display-line-numbers-mode 1)
     (show-paren-mode 1)
     :config
-    (defconst laptop-font "SF Mono-12")
-    (defconst 4kmonitor-font "SF Mono-13")
+    (defconst laptop-font "SF Mono-12:weight=regular")
+    (defconst 4kmonitor-font "SF Mono-12:weight=regular")
     (defun set-font-based-on-monitor ()
       (interactive)
       (when window-system
