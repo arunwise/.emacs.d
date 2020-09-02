@@ -260,6 +260,9 @@ winner here.
   :config
   (setq aw-ignore-current nil)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?k ?l))
+  (custom-set-faces
+   '(aw-leading-char-face
+     ((t (:inherit ace-jump-face-foreground :height 3.0)))))
   :bind ("C-x o" . ace-window))
 #+END_SRC
 * Shell
