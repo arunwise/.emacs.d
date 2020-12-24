@@ -3,6 +3,18 @@
 
 This configuration is largely based on the one used by [[https://gitlab.com/protesilaos/dotfiles][Protesilaos
 Stavrou]]. Large chunks have been liberally copied from there.
+
+* Platform
+#+BEGIN_SRC emacs-lisp
+(defvar macosx-p (eq system-type 'darwin) "True if using Mac OS X, nil otherwise")
+#+END_SRC
+* Shell
+#+BEGIN_SRC emacs-lisp
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+(setq explicit-shell-file-name "/bin/zsh")
+(setq explicit-zsh-args '("-l" "-i"))
+#+END_SRC
 * Setup use-package
 
 #+begin_src emacs-lisp
@@ -33,7 +45,8 @@ Stavrou]]. Large chunks have been liberally copied from there.
   (unless (file-exists-p custom-file)
     (write-region "" nil custom-file))
 
-  (load custom-file))
+  (load custom-file)
+)
 #+END_SRC
 
 * Uniquify
@@ -53,8 +66,10 @@ Stavrou]]. Large chunks have been liberally copied from there.
     :ensure t
     :config
     (ivy-mode 1)
-    ;;(setq ivy-use-virtual-buffers t)
-    (setq ivy-count-format "(%d/%d) "))
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-count-format "(%d/%d) ")
+    (setq ivy-read-action-function 'ivy-read-action-ivy) ; handle bug ivy-bibtex action menu https://github.com/abo-abo/swiper/issues/2397
+)
 #+END_SRC
 
 * Swiper
@@ -67,35 +82,40 @@ Stavrou]]. Large chunks have been liberally copied from there.
 
 * GUI
 Laptop preferred fonts (at 1680x1050 resolution):
-- =Inconsolata-12=
-- =SF Mono-12=
+- =Menlo-12=
 4K monitor preferred fonts (at 3360x1890 scaled resolution):
-- =Inconsolata-13.5=
-- =SF Mono-12=
+- =Menlo-14=
 #+BEGIN_SRC emacs-lisp
-(use-package emacs
-    :init
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)
-    (line-number-mode 1)
-    (column-number-mode 1)
-    (show-paren-mode 1)
-    :config
-    (defconst laptop-font "SF Mono-12:weight=regular")
-    (defconst 4kmonitor-font "SF Mono-12:weight=regular")
-    (defun set-font-based-on-monitor ()
-      (interactive)
-      (when window-system
-	(if (<= (display-pixel-width) 1680)
-	    (set-frame-font laptop-font)
-	  (set-frame-font 4kmonitor-font))))
-    (setq inhibit-splash-screen t)	
-    (setq show-paren-delay 0)
-    (setq backup-directory-alist
-        `((".*" . ,temporary-file-directory)))
-    (setq auto-save-file-name-transforms
-        `((".*" ,temporary-file-directory t)))
-    :hook (after-init . set-font-based-on-monitor))
+
+;; oddly the following are functions and not variables
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
+(line-number-mode t)
+(column-number-mode t)
+(show-paren-mode t)
+;;
+
+(setq inhibit-splash-screen t)	
+(setq show-paren-delay 0)
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+(defconst laptop-font "Menlo-12")
+(defconst 4kmonitor-font "Menlo-14")
+(defun set-font-based-on-monitor ()
+  (interactive)
+  (when window-system
+    (if (<= (display-pixel-width) 1680)
+	(set-face-attribute 'default nil :height 120)
+      (set-face-attribute 'default nil :height 140))))
+(set-font-based-on-monitor)
+
+;; always create frames with full height
+(add-to-list 'default-frame-alist '(fullscreen . fullheight))
+(add-to-list 'default-frame-alist '(width . 100))
+(add-to-list 'default-frame-alist '(left . 100))
 #+END_SRC
 
 * Magit
@@ -163,28 +183,28 @@ Laptop preferred fonts (at 1680x1050 resolution):
     (setq org-src-fontify-natively t)
     (setq org-src-preserve-indentation t)
     (setq org-src-tab-acts-natively t)
-    (setq org-edit-src-content-indentation 0))
+    (setq org-edit-src-content-indentation 0)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((python . t))))
 #+END_SRC
 
 * Latex
 #+BEGIN_SRC emacs-lisp
 (use-package auctex
   :defer t
-  :ensure t
-  :config
-  (setenv "PATH" (concat "/Library/TeX/texbin:"
-			 (getenv "PATH")))
-  (add-to-list 'exec-path "/Library/TeX/texbin"))
+  :ensure t)
 #+END_SRC
 
 * Elpy
 #+BEGIN_SRC emacs-lisp
-(use-package elpy
-  :ensure t
-  :defer t
-  :init
-  (advice-add 'python-mode :before 'elpy-enable))
+;; (use-package elpy
+;;   :ensure t
+;;   :defer t
+;;   :init
+;;   (advice-add 'python-mode :before 'elpy-enable))
 #+END_SRC
+
 * Python-docstring
 #+BEGIN_SRC emacs-lisp
 (use-package python-docstring
@@ -234,6 +254,16 @@ Laptop preferred fonts (at 1680x1050 resolution):
   :hook (after-init . ibuffer-projectile-groups))
 #+END_SRC
 
+* Projectile
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :ensure t
+  :defer t
+  :config
+  (projectile-mode +1)
+  (setq projectile-completion-system 'ivy))
+#+END_SRC
+
 * Counsel-projectile
 #+BEGIN_SRC emacs-lisp
 (use-package counsel-projectile
@@ -242,10 +272,30 @@ Laptop preferred fonts (at 1680x1050 resolution):
   :bind ("s-p" . projectile-command-map))
 #+END_SRC
 
+* osx-location
+#+BEGIN_SRC emacs-lisp
+(defun set-lat-long ()
+  (interactive)
+  (setq calendar-latitude osx-location-latitude
+	calendar-longitude osx-location-longitude))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package osx-location
+  :if macosx-p
+  :ensure t
+  :init
+  (add-hook 'osx-location-changed-hook #'set-lat-long)
+  (osx-location-watch))
+#+END_SRC
+
 * Theme
 #+BEGIN_SRC emacs-lisp
 (use-package modus-operandi-theme
-  :ensure t)
+  :ensure t
+  :init
+  (load-theme 'modus-operandi)
+)
 #+END_SRC
 
 * Window/Frame movement
@@ -265,22 +315,12 @@ winner here.
      ((t (:inherit ace-jump-face-foreground :height 3.0)))))
   :bind ("C-x o" . ace-window))
 #+END_SRC
-* Shell
-#+BEGIN_SRC emacs-lisp
-(use-package emacs
-  :init
-  (setq explicit-shell-file-name "/bin/zsh")
-  (setq explicit-zsh-args '("-l" "-i"))
-)
-#+END_SRC
 * Coding system
 #+BEGIN_SRC emacs-lisp
-(use-package emacs
-  :init
-  (prefer-coding-system 'utf-8)
-  (set-default-coding-systems 'utf-8)
-  (set-terminal-coding-system 'utf-8)
-  (set-keyboard-coding-system 'utf-8))
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
 #+END_SRC
 * Spellchecker
 #+BEGIN_SRC emacs-lisp
@@ -289,14 +329,53 @@ winner here.
   :config
   (setq ispell-program-name "/usr/local/bin/ispell"))
 #+END_SRC
-* Xwidget
+* Language Server Protocol
 #+BEGIN_SRC emacs-lisp
-(use-package emacs
-  :bind ("s-w" . xwidget-webkit-browse-url))  
+(add-hook 'hack-local-variables-hook
+      (lambda ()
+    (when (derived-mode-p 'python-mode)
+      (require 'lsp-python-ms)
+      (lsp)))) ; or lsp-deferred
 #+END_SRC
-* Sql
+
 #+BEGIN_SRC emacs-lisp
-(use-package emacs
-  :config
-  (add-to-list 'exec-path "/usr/local/bin/"))
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  ;; :after lsp-latex
+  ;; :hook
+  ;; (LaTeX-mode . lsp)
+  ;; (tex-mode . lsp)
+  ;; (bibtex-mode . lsp)
+  ;; :config
+  ;(lsp-enable-which-key-integration t)
+)
+#+END_SRC
+
+** Python mode
+#+BEGIN_SRC emacs-lisp
+(use-package python-mode
+  :ensure nil
+  :custom
+  (python-shell-interpreter "python3"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-python-ms
+  :ensure t
+  :init (setq lsp-python-ms-auto-install-server t)
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-python-ms)
+                          (lsp))))  ; or lsp-deferred
+#+END_SRC
+
+* Conda
+#+BEGIN_SRC emacs-lisp
+(use-package conda
+  :ensure t
+  :init
+  (setq conda-anaconda-home "/Users/arun.nampally/opt/miniconda3")
+  (setq conda-env-home-directory "/Users/arun.nampally/opt/miniconda3")
+)
 #+END_SRC
