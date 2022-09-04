@@ -187,7 +187,8 @@ Laptop preferred fonts (at 1680x1050 resolution):
     (setq org-edit-src-content-indentation 0)
     (org-babel-do-load-languages
      'org-babel-load-languages
-     '((python . t))))
+     '((python . t)
+       (ocaml . t))))
 #+END_SRC
 
 * Latex
@@ -335,6 +336,12 @@ winner here.
     :config
     (which-key-mode))
 
+;; lsp over tramp
+(lsp-register-client
+    (make-lsp-client :new-connection (lsp-tramp-connection "pylsp")
+                     :major-modes '(python-mode)
+                     :remote? t
+                     :server-id 'pylsp-remote))
 #+END_SRC
 ** Python mode
 #+BEGIN_SRC emacs-lisp
