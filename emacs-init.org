@@ -132,19 +132,21 @@ Laptop preferred fonts (at 1680x1050 resolution):
     :config
     ;;agenda and notes
     (setq org-directory "~/org-files")
-    (setq org-default-notes-file "~/org-files/notes.org")
-    (setq org-agenda-files '("~/org-files/agenda.org"))
+    (setq org-default-notes-file "~/org-files/inbox.org")
+    (setq org-agenda-files '("~/org-files/gtd.org"))
+    ;; global tag list
+    (setq org-tag-alist '(("A" . ?a) ("L" . ?l)))
     ;; refile
     (setq org-refile-targets
-        '((org-agenda-files . (:maxlevel . 2))
-	(nil . (:maxlevel . 2))))
+        '(("~/org-files/gtd.org" :maxlevel . 2)
+	  ("~/org-files/someday.org" :maxlevel . 2)
+	  ("~/org-files/reference.org" :maxlevel . 2)))
     ;; don't want to refile under TODO entries
     (defun refile-target-predicate ()
       (not (nth 2 (org-heading-components))))
     (setq org-refile-target-verify-function 'refile-target-predicate)
     (setq org-todo-keywords
-        '((sequence "TODO(t)" "BLOCKED(b)" "|" "DONE(d)" "CANCELED(c)" "SOMEDAY(s)")
-	(sequence "BACKLOG(g)" "IMPLEMENTATION-PLAN(i)" "PROGRESS(p)" "REVIEW(r)" "|" "CLOSED(l)")))
+        '((sequence "TODO(t)" "Progress(p)" "Waiting(w)" "|" "DONE(d)" "CANCELED(c)")))
     :bind ("C-c l" . org-store-link))
 #+END_SRC
 
@@ -154,10 +156,9 @@ Laptop preferred fonts (at 1680x1050 resolution):
     :after org
     :config
     (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org-files/notes.org" "Tasks")
-        "* TODO %?\n  %i\n  %a")
-	("n" "Note" entry (file+headline "~/org-files/notes.org" "Notes")
-	"* %? :NOTE:\n%U")))
+        '(
+	  ("n" "Note" entry (file "~/org-files/inbox.org")
+	   "* %? \n%U")))
     :bind ("C-c c" . org-capture))
 #+END_SRC
 
@@ -194,15 +195,6 @@ Laptop preferred fonts (at 1680x1050 resolution):
 (use-package auctex
   :defer t
   :ensure t)
-#+END_SRC
-
-* Elpy
-#+BEGIN_SRC emacs-lisp
-;; (use-package elpy
-;;   :ensure t
-;;   :defer t
-;;   :init
-;;   (advice-add 'python-mode :before 'elpy-enable))
 #+END_SRC
 
 * Ivy-bibtex
@@ -363,7 +355,7 @@ winner here.
 (use-package conda
   :ensure t
   :init
-  (setq conda-anaconda-home "/Users/arun.nampally/opt/miniconda3")
-  (setq conda-env-home-directory "/Users/arun.nampally/opt/miniconda3")
+  (setq conda-anaconda-home "~/miniconda3")
+  (setq conda-env-home-directory "~/miniconda3")
 )
 #+END_SRC
