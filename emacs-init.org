@@ -366,3 +366,13 @@ winner here.
   (setq conda-env-home-directory "~/miniconda3")
 )
 #+END_SRC
+
+* Pdf-tools
+#+BEGIN_SRC emacs-lisp
+(use-package pdf-tools
+  :ensure t
+  :magic ("%PDF" . pdf-view-mode)
+  :config
+  (pdf-tools-install :no-query)
+)
+#+END_SRC
